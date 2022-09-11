@@ -1,5 +1,7 @@
 '''
 Main driver file. Responsable for user input and displaying the current state of the GameState object.
+YT reference playlist : https://youtube.com/playlist?list=PLBwF487qi8MGU81nDGaeNE1EnNEPYWKY_
+Current video count: 2
 '''
 
 import pygame as p
@@ -9,7 +11,7 @@ p.init()
 WIDTH = HEIGHT = 512
 DIMENSION = 8
 SQ_SIZE = HEIGHT // DIMENSION
-MAX_FPS = 30
+MAX_FPS = 15
 IMAGES = {}
 
 '''
@@ -32,10 +34,29 @@ def main():
     gs = ChessEngine.GameState()
     load_images()
     running = True
+    sq_selected = () #no square is selected. Meant to hold the tuple of the last click event
+    player_clicks = [] #keep track of player clicks (two tuples [(6,4),(4,4)])
     while running:
         for e in p.event.get():
             if e.type == p.QUIT:
                 running = False
+            elif e.type == p.MOUSEBUTTONDOWN:
+                location = p.mouse.get_pos() #(x, y) location of mouse
+                col = location[0]//SQ_SIZE #(x)
+                row = location[1]//SQ_SIZE #(y)
+                if sq_selected == (row, col):
+                    sq_selected = ()
+                    player_clicks = []
+                else:
+                    sq_selected = (row,col)
+                    player_clicks.append(sq_selected) #append for 1st to 2sd clicks
+                    #print("position {sel[0]} {sel[1]}".format(sel = sq_selected))
+                if len(player_clicks) == 2: #after second click
+                    move = ChessEngine.Move(player_clicks[0], player_clicks[1], gs.board)
+                    print(move.get_chess_notation())
+                    gs.make_move(move)
+                    sq_selected = ()
+                    player_clicks = []
         drawGameState(screen,gs)
         clock.tick(MAX_FPS)
         p.display.flip()
@@ -72,14 +93,7 @@ def draw_pieces(screen, board):
                 screen.blit(IMAGES[piece], p.Rect(c*SQ_SIZE,r*SQ_SIZE,SQ_SIZE,SQ_SIZE))
                 
     
-    
-    
-    
-    
-    
-    
-    
-    
+
     
     
 

@@ -1,7 +1,8 @@
 '''
 Main driver file. Responsable for user input and displaying the current state of the GameState object.
 YT reference playlist : https://youtube.com/playlist?list=PLBwF487qi8MGU81nDGaeNE1EnNEPYWKY_
-Current video count: 2
+Current video count: 6
+Left in: 'naive way of making valid moves' (7:00)
 '''
 
 import pygame as p

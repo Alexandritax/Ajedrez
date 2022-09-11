@@ -14,7 +14,7 @@ class GameState():
             ["bp","bp","bp","bp","bp","bp","bp","bp"],
             ["--","--","--","--","--","--","--","--"],
             ["--","--","--","--","--","--","--","--"],
-            ["--","--","wR","--","--","bB","--","--"],
+            ["--","--","--","--","--","--","--","--"],
             ["--","--","--","--","--","--","--","--"],
             ["wp","wp","wp","wp","wp","wp","wp","wp"],
             ["wR","wN","wB","wQ","wK","wB","wN","wR"]]
@@ -23,6 +23,8 @@ class GameState():
         
         self.white_to_move = True
         self.move_log = []
+        self.white_king_location = (7,4)
+        self.black_king_location = (0,4)
     
     '''
     Takes a move as a parameter and executes it (does not work for castling, promotion or en-passant)
@@ -32,6 +34,11 @@ class GameState():
         self.board[move.end_row][move.end_col] = move.piece_moved
         self.move_log.append(move)
         self.white_to_move = not self.white_to_move #swap players
+        #updating the piece location
+        if move.piece_moved == 'wK':
+            self.white_king_location = (move.end_row,move.end_col)
+        elif move.piece_moved == 'bK':
+            self.black_king_location = (move.end_row,move.end_col)
         
         
     '''

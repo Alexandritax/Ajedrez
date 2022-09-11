@@ -114,18 +114,52 @@ class GameState():
     '''Get all the knight moves for the pawn at the r and c adding this to the list'''   
         
     def get_knight_moves(self, r, c, moves):
-        pass 
-    '''Get all the bishio moves for the pawn at the r and c adding this to the list'''   
+        directions = ((-2,-1),(-2,1),(-1,-2),(-1,2),(2,-1),(2,1),(1,-2),(1,2))
+        enemy_color = 'b' if self.white_to_move else 'w'
+        for d in directions:
+            end_row = r + d[0]
+            end_col = c + d[1]
+            if 0 <= end_row < 8 and 0 <= end_col < 8: #on board
+                end_piece = self.board[end_row][end_col]
+                if (end_piece[0] == enemy_color) or (end_piece == "--"): #enemy piece valid
+                    moves.append(Move((r,c),(end_row,end_col),self.board))
+                    
+    '''Get all the bishop moves for the pawn at the r and c adding this to the list'''   
     
     def get_bishop_moves(self, r, c, moves):
-        pass
+        directions = ((-1,-1),(-1,1),(1,-1),(1,1))
+        enemy_color = 'b' if self.white_to_move else 'w'
+        for d in directions:
+            for i in range(1,8):
+                end_row = r + d[0] * i
+                end_col = c + d[1] * i
+                if 0 <= end_row < 8 and 0 <= end_col < 8: #on board
+                    end_piece = self.board[end_row][end_col]
+                    if end_piece == '--':
+                        moves.append(Move((r,c),(end_row,end_col),self.board))
+                    elif end_piece[0] == enemy_color: #enemy piece valid
+                        moves.append(Move((r,c),(end_row,end_col),self.board))
+                        break
+                    else: #friendly piece
+                        break
+                else: #off boarder
+                    break
     '''Get all the queen moves for the pawn at the r and c adding this to the list'''   
      
     def get_queen_moves(self, r, c, moves):
-        pass   
+        self.move_functions['R'](r,c,moves)
+        self.move_functions['B'](r,c,moves)
     '''Get all the king moves for the pawn at the r and c adding this to the list'''    
     def get_king_moves(self, r, c, moves):
-        pass 
+        directions = ((-1,0),(0,-1),(1,0),(0,1),(-1,-1),(-1,1),(1,-1),(1,1))
+        enemy_color = 'b' if self.white_to_move else 'w'
+        for d in directions:
+            end_row = r + d[0]
+            end_col = c + d[1]
+            if 0 <= end_row < 8 and 0 <= end_col < 8: #on board
+                end_piece = self.board[end_row][end_col]
+                if (end_piece[0] == enemy_color) or (end_piece == "--"): #enemy piece valid
+                    moves.append(Move((r,c),(end_row,end_col),self.board))
         
         
          

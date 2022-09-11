@@ -51,7 +51,7 @@ class GameState():
         return self.get_all_moves() # for now
     
     '''
-    All moves wihtout considering checks test 1 Move((6,4),(4,4),self.board)
+    All moves wihtout considering checks
     '''
     def get_all_moves(self):
         moves = []

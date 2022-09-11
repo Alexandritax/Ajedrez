@@ -60,8 +60,10 @@ def main():
                     if move in valid_moves:
                         gs.make_move(move)
                         move_made = True
-                    sq_selected = ()
-                    player_clicks = []
+                        sq_selected = () #reset user clicks
+                        player_clicks = []
+                    else: #this allows to select other piece while selecting the first piece
+                        player_clicks = [sq_selected]
             elif e.type == p.KEYDOWN: #this hanndles keys
                     if e.key == p.K_z: #when pressing z
                         gs.undo_move()

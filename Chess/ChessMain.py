@@ -10,7 +10,7 @@ WIDTH = HEIGHT = 512
 DIMENSION = 8
 SQ_SIZE = HEIGHT // DIMENSION
 MAX_FPS = 30
-IMAGES = ()
+IMAGES = {}
 
 '''
 Initialize a global directory of images. So to call only once in main
@@ -18,7 +18,7 @@ Initialize a global directory of images. So to call only once in main
 def load_images():
     pieces = ['bB',"bK",'bN','bp','bQ','bR','wB',"wK",'wN','wp','wQ','wR']
     for piece in pieces:
-        IMAGES[piece] = p.transform.scale(p.image.load('images/' + piece + '.png'), (SQ_SIZE,SQ_SIZE))
+        IMAGES[piece] = p.transform.scale(p.image.load('Chess/images/' + piece + '.png'), (SQ_SIZE, SQ_SIZE))
     #We can access an image by saying IMAGES["wp"]
     
 '''

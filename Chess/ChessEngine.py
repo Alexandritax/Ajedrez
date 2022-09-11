@@ -48,15 +48,15 @@ class GameState():
         return self.get_all_moves() # for now
     
     '''
-    All moves wihtout considering checks
+    All moves wihtout considering checks test 1 Move((6,4),(4,4),self.board)
     '''
     def get_all_moves(self):
-        moves = [Move((6,4),(4,4),self.board)]
+        moves = []
         #we go through the board
         for r in range(len(self.board)):
             for c in range(len(self.board[r])):
                 piece_color = self.board[r][c][0]
-                if (piece_color == 'w' and self.white_to_move) and (piece_color == 'b' and not self.white_to_move):
+                if (piece_color == 'w' and self.white_to_move) or (piece_color == 'b' and not self.white_to_move):
                     piece = self.board[r][c][1]
                     if piece == 'p':
                         self.get_pawn_moves(r,c,moves)
@@ -67,7 +67,11 @@ class GameState():
     '''Get all the pawn moves for the pawn at the r and c adding this to the list'''
     
     def get_pawn_moves(self, r, c, moves):
-        pass
+        if self.white_to_move:
+            if self.board[r-1][c] == '--':
+                moves.append(Move((r,c),(r-1,c),self.board))
+                if r==6 and self.board[r-2][c] == '--':
+                    moves.append(Move((r,c),(r-2,c),self.board))
         
     '''Get all the rook moves for the pawn at the r and c adding this to the list'''        
         
@@ -100,7 +104,7 @@ class Move():
         self.piece_moved = board[self.start_row][self.start_col]
         self.piece_captured = board[self.end_row][self.end_col]
         self.move_id = self.start_row * 1000 + self.start_col * 100 + self.end_row * 10 + self.end_col
-        print(self.move_id)
+        #print(self.move_id)
         
     '''
     Overriding the equal method

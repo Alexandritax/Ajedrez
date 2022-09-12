@@ -25,6 +25,8 @@ class GameState():
         self.move_log = []
         self.white_king_location = (7,4)
         self.black_king_location = (0,4)
+        self.check_mate = False
+        self.stale_mate = False
     
     '''
     Takes a move as a parameter and executes it (does not work for castling, promotion or en-passant)
@@ -52,10 +54,54 @@ class GameState():
             self.white_to_move = not self.white_to_move #switch
            
     '''
-    All moves considering checks
+    All moves considering checks see naive approach for a simpler explanation.
     '''    
     def get_valid_moves(self):
-        return self.get_all_moves() # for now
+        #generate all moves
+        moves = self.get_all_moves()
+        #for each move, make a move
+        for i in range(len(moves)-1,-1,-1): #when removing form a list go backwards through the list
+            self.make_move(moves[i])
+            #generate the oponent moves
+            #detect if a move attack your king
+            self.white_to_move = not self.white_to_move #when making the move it changes players so we undo that here.
+            if self.in_check():
+                moves.remove(moves[i]) #if they do, then the vulnerable move is invalid
+            self.white_to_move = not self.white_to_move
+            self.undo_move()
+        if len(moves) == 0:
+            if self.in_check():
+                self.check_mate = True
+            else:
+                self.stale_mate = True
+        else:
+            self.check_mate = False
+            self.stale_mate = False
+        
+        return moves
+    
+    '''
+    Determine if the current player is in check
+    '''
+    
+    def in_check(self):
+        if self.white_to_move:
+            return self.square_under_attack(self.white_king_location[0], self.white_king_location[1])
+        else:
+            return self.square_under_attack(self.black_king_location[0], self.black_king_location[1])
+    
+    '''
+    determine if the enemy can attack the square r,c
+    '''
+    
+    def square_under_attack(self,r,c):
+        self.white_to_move = not self.white_to_move
+        opp_moves = self.get_all_moves()
+        self.white_to_move = not self.white_to_move
+        for move in opp_moves:
+            if move.end_row == r and move.end_col == c:
+                return True
+        return False
     
     '''
     All moves wihtout considering checks
